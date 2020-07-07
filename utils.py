@@ -6,7 +6,8 @@ BASE_URL = "http://localhost:1323/"
 
 HEX_CHARS = set('0123456789abcdef')
 
-# For testing only, limited to 1 insecure pubkey, rate-limiting shared across all users
+# For testing only
+# Limited to 1 INSECURE pubkey, rate-limiting shared across all users
 TESTING_API_TOKEN = 'SG-XXXX'
 
 
