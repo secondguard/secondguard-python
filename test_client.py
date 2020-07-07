@@ -1,7 +1,7 @@
 from os import urandom
 
 from secondguard.utils import _fetch_testing_pubkey, assert_same, PUBKEY_STR, TESTING_API_TOKEN
-from secondguard.main import secondguard_encrypt, secondguard_decrypt
+from secondguard.main import sg_hybrid_encrypt, sg_hybrid_decrypt
 
 
 # TODO: add static decrypt test vectors
@@ -16,13 +16,13 @@ def perform_sg_hybrid_encryption(num_bytes=1000):
     # This represents the info you're trying to protect (could be of any length):
     secret = urandom(num_bytes)
 
-    local_ciphertext, sg_recovery_instructions = secondguard_encrypt(
+    local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
         to_encrypt=secret,
         rsa_pubkey=TESTING_RSA_PUBKEY,
         api_token=TESTING_API_TOKEN,
     )
 
-    secret_recovered, rate_limit_info = secondguard_decrypt(
+    secret_recovered, rate_limit_info = sg_hybrid_decrypt(
         local_ciphertext_to_decrypt=local_ciphertext,
         sg_recovery_instructions=sg_recovery_instructions,
         api_token=TESTING_API_TOKEN,

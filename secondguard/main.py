@@ -3,18 +3,20 @@ from secondguard.pyca import symmetric_encrypt, symmetric_decrypt, asymmetric_en
 from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
-
-# FIXME: rename hybrid encrypt/decrypt!
-
-def secondguard_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
+def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
     """
-    Note that we DO NOT return the symmetric key generated as we do NOT want to save this locally!
+    What's happening under the hood:
+      1. Symmetrically encrypt your information with a locally generated symmetric key (`key`) -> ciphertext
+      2. Asymmetrically encrypt your `key` with your RSA pubkey (kept in an HSM) -> asymm_ciphertext (sg_recovery_instructions)
+      3. Return your local ciphertext
+
+    Note that we DO NOT return the symmetric key (`key`) generated as we do NOT want to save this locally!
     """
     assert type(to_encrypt) is bytes, to_encrypt
     _assert_valid_pubkey(rsa_pubkey)
     _assert_valid_api_token(api_token)
 
-    ciphertext, key = symmetric_encrypt(
+    local_ciphertext, key = symmetric_encrypt(
         to_encrypt=to_encrypt,
         confirm=confirm,
     )
@@ -23,12 +25,14 @@ def secondguard_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
         rsa_pubkey=rsa_pubkey,
     )
 
-    # To save locally in our DB:
-    # We are returning the following format: (local_ciphertext, sg_recovery_instructions)
-    return ciphertext, asymm_ciphertext
+    # Save this locally in our DB:
+    return local_ciphertext, asymm_ciphertext
 
 
-def secondguard_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api_token):
+def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api_token):
+    """
+    Recover the symmetric key from SecondGuard (`symmetric_key_recovered`) and then use it to (locally) decrypt the data in your DB (`secret_recovered`).
+    """
     assert type(local_ciphertext_to_decrypt) is bytes, local_ciphertext_to_decrypt
 
     # Recover symmetric key from SG HSM
@@ -38,13 +42,13 @@ def secondguard_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, a
     )
 
     # Grab the key to use for local decryption
-    symmetric_key_used = decrypted_recovery_instructions.pop('decrypted')
+    symmetric_key_recovered = decrypted_recovery_instructions.pop('decrypted')
 
     # Locally decrypt ciphertext using recovered key
     secret_recovered = symmetric_decrypt(
         ciphertext=local_ciphertext_to_decrypt,
-        key=symmetric_key_used,
+        key=symmetric_key_recovered,
     )
 
-    # Return the secret and the rate limit info (decrypted_recovery_instructions is now just rate limit info):
+    # Return the recovered secret and the rate limit info (decrypted_recovery_instructions is now just rate limit info):
     return secret_recovered, decrypted_recovery_instructions
