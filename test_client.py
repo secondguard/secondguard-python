@@ -12,7 +12,7 @@ for cnt in range(5):
     pass
 
 
-def perform_sg_hybrid_encryption(num_bytes=1000):
+def perform_sg_hybrid_encryption_and_decryption(num_bytes=1000):
     # This represents the info you're trying to protect (could be of any length):
     secret = urandom(num_bytes)
 
@@ -35,6 +35,6 @@ def perform_sg_hybrid_encryption(num_bytes=1000):
     assert set(rate_limit_info.keys()) == set(('ratelimit_limit', 'ratelimit_remaining', 'ratelimit_reset'))
 
 
-def test_sg_hybrid_encryption(cnt=5):
+def test_sg_hybrid_encryption_and_decryption(cnt=5):
     for attempt in range(cnt):
         perform_sg_hybrid_encryption(num_bytes=attempt*1000)

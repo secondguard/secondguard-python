@@ -6,7 +6,7 @@
 
 Create a virtualenv, activate, install `requirements.txt` (including this repo) and run tests:
 ```bash
-$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable . && py.test -v
+$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable . && pytest -v
 ```
 
 ## Use
@@ -38,13 +38,16 @@ secret_recovered, rate_limit_info = sg_hybrid_decrypt(
 assert your_secret == secret_recovered
 ```
 
+### Further Reading
+You can see the basics of how this hybrid encryption protocol works either in [test_client.py](test_client.py)
+
 ---
 
-### Further Reading
+### Details
 
 Run tests to confim it's working (add a `-v` flag for more output):
 ```bash
-$ py.test
+$ pytest
 =============================== test session starts ===============================
 ...
 ================================ 3 passed in 0.94s ================================
