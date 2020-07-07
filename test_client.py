@@ -37,4 +37,4 @@ def perform_sg_hybrid_encryption_and_decryption(num_bytes=1000):
 
 def test_sg_hybrid_encryption_and_decryption(cnt=5):
     for attempt in range(cnt):
-        perform_sg_hybrid_encryption(num_bytes=attempt*1000)
+        perform_sg_hybrid_encryption_and_decryption(num_bytes=attempt*1000)
