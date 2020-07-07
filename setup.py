@@ -18,7 +18,7 @@ setup(
     name='secondguard',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    version='0.8',
+    version='0.81',
     description='SecondGuard Python Library',
     author='Michael Flaxman',
     author_email='python-library@secondguard.com',
