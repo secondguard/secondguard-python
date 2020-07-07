@@ -17,9 +17,19 @@ def _assert_valid_api_token(api_token):
 
     assert api_token.startswith('SG-'), api_token
 
+def _assert_valid_pubkey(pubkey_str):
+    assert type(pubkey_str) is str, pubkey_str
+    assert pubkey_str.strip().startswith('-----BEGIN PUBLIC KEY-----'), pubkey_str
+    assert pubkey_str.strip().endswith('-----END PUBLIC KEY-----'), pubkey_str
+
+def _assert_valid_privkey(privkey_str):
+    assert type(privkey_str) is str, privkey_str
+    assert privkey_str.strip().startswith('-----BEGIN RSA PRIVATE KEY-----'), privkey_str
+    assert privkey_str.strip().endswith('-----END RSA PRIVATE KEY-----'), privkey_str
+
 
 def _fetch_testing_pubkey(url=BASE_URL + "static/pubkey.crt"):
-    return requests.get(url).content
+    return requests.get(url).content.decode('utf-8')
 
 
 def _write_bytes_to_file(some_bytes, filepath):

@@ -1,6 +1,6 @@
 from secondguard import perform_asymmetric_decrypt_secondguard
 from pyca import symmetric_encrypt, symmetric_decrypt, asymmetric_encrypt, asymmetric_decrypt
-from utils import _assert_valid_api_token
+from utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
 
@@ -9,7 +9,7 @@ def secondguard_encrypt(to_encrypt, pubkey, api_token, confirm=True):
     Note that we DO NOT return the symmetric key generated as we do NOT want to save this locally!
     """
     assert type(to_encrypt) is bytes, to_encrypt
-    assert type(pubkey) is bytes, pubkey
+    _assert_valid_pubkey(pubkey)
     _assert_valid_api_token(api_token)
 
     ciphertext, key = symmetric_encrypt(
@@ -18,7 +18,7 @@ def secondguard_encrypt(to_encrypt, pubkey, api_token, confirm=True):
     )
     asymm_ciphertext = asymmetric_encrypt(
         bytes_to_encrypt=key,
-        pubkey_bytes=pubkey,
+        pubkey_str=pubkey,
     )
 
     # To save locally in our DB:
