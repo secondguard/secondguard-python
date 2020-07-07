@@ -10,10 +10,7 @@ from utils import _fetch_testing_pubkey
 
 
 # TODO: move to a setup class?
-with open('localprivkey.pem', 'r') as f:
-    PRIVKEY_STR = f.read()
-with open('localpubkey.crt', 'r') as f:
-    PUBKEY_STR = f.read()
+from utils import PUBKEY_STR, PRIVKEY_STR
 
 # TODO: come up with less HACKey way to test many times
 # TODO: add static decrypt test vectors
@@ -30,14 +27,14 @@ def test_symmetric(cnt=100):
         perform_symmetric_encryption_decryption(num_bytes=attempt*100)
 
 
-def perform_asymmetric_encryption_decryption(privkey_str, pubkey_str):
+def perform_asymmetric_encryption_decryption(privkey_str, rsa_pubkey):
     bytes_to_encrypt = urandom(32)
-    ciphertext_b64 = asymmetric_encrypt(bytes_to_encrypt=bytes_to_encrypt, pubkey_str=PUBKEY_STR)
-    recovered_bytes = asymmetric_decrypt(ciphertext_b64=ciphertext_b64, privkey_str=PRIVKEY_STR)
+    ciphertext_b64 = asymmetric_encrypt(bytes_to_encrypt=bytes_to_encrypt, rsa_pubkey=PUBKEY_STR)
+    recovered_bytes = asymmetric_decrypt(ciphertext_b64=ciphertext_b64, rsa_privkey=PRIVKEY_STR)
     assert bytes_to_encrypt == recovered_bytes
 
 
 def test_asymmetric(cnt=10):
     for attempt in range(cnt):
-        perform_asymmetric_encryption_decryption(privkey_str=PRIVKEY_STR, pubkey_str=PUBKEY_STR)
+        perform_asymmetric_encryption_decryption(privkey_str=PRIVKEY_STR, rsa_pubkey=PUBKEY_STR)
 

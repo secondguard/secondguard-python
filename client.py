@@ -4,12 +4,12 @@ from utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
 
-def secondguard_encrypt(to_encrypt, pubkey, api_token, confirm=True):
+def secondguard_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
     """
     Note that we DO NOT return the symmetric key generated as we do NOT want to save this locally!
     """
     assert type(to_encrypt) is bytes, to_encrypt
-    _assert_valid_pubkey(pubkey)
+    _assert_valid_pubkey(rsa_pubkey)
     _assert_valid_api_token(api_token)
 
     ciphertext, key = symmetric_encrypt(
@@ -18,7 +18,7 @@ def secondguard_encrypt(to_encrypt, pubkey, api_token, confirm=True):
     )
     asymm_ciphertext = asymmetric_encrypt(
         bytes_to_encrypt=key,
-        pubkey_str=pubkey,
+        rsa_pubkey=rsa_pubkey,
     )
 
     # To save locally in our DB:

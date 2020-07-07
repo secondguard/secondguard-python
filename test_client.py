@@ -1,14 +1,12 @@
 from os import urandom
-from utils import _fetch_testing_pubkey
-from utils import assert_same
+from utils import _fetch_testing_pubkey, assert_same, PUBKEY_STR, TESTING_API_TOKEN
 
 from client import secondguard_encrypt, secondguard_decrypt
 
-TESTING_PUBKEY = _fetch_testing_pubkey()
-API_TOKEN = 'SG-XXXX'
-
 
 # TODO: add static decrypt test vectors
+
+TESTING_RSA_PUBKEY = _fetch_testing_pubkey()
 
 for cnt in range(5):
     pass
@@ -20,14 +18,14 @@ def perform_sg_hybrid_encryption(num_bytes=1000):
 
     local_ciphertext, sg_recovery_instructions = secondguard_encrypt(
         to_encrypt=secret,
-        pubkey=TESTING_PUBKEY,
-        api_token=API_TOKEN,
+        rsa_pubkey=TESTING_RSA_PUBKEY,
+        api_token=TESTING_API_TOKEN,
     )
 
     secret_recovered, rate_limit_info = secondguard_decrypt(
         local_ciphertext_to_decrypt=local_ciphertext,
         sg_recovery_instructions=sg_recovery_instructions,
-        api_token=API_TOKEN,
+        api_token=TESTING_API_TOKEN,
     )
 
     # Important test:

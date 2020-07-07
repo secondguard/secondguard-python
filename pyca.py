@@ -30,14 +30,12 @@ def symmetric_decrypt(ciphertext, key):
 
 
 
-def asymmetric_encrypt(bytes_to_encrypt, pubkey_str):
+def asymmetric_encrypt(bytes_to_encrypt, rsa_pubkey, partial_confirm=True):
     assert type(bytes_to_encrypt) is bytes, bytes_to_encrypt
-    assert type(pubkey_str) is str, pubkey_str
-    _assert_valid_pubkey(pubkey_str)
+    _assert_valid_pubkey(rsa_pubkey)
 
     # Extract and parse the public key as a PEM-encoded RSA key.
-    # pem = pubkey_str.pem.encode('utf-8')
-    pubkey_bytes = pubkey_str.encode()
+    pubkey_bytes = rsa_pubkey.encode()
     rsa_key = serialization.load_pem_public_key(pubkey_bytes, backend=default_backend())
 
     # Construct the padding. Note that the padding differs based on key choice.
@@ -51,17 +49,17 @@ def asymmetric_encrypt(bytes_to_encrypt, pubkey_str):
     return b64encode(ciphertext)
 
 
-def asymmetric_decrypt(ciphertext_b64, privkey_str, password=None):
+def asymmetric_decrypt(ciphertext_b64, rsa_privkey, password=None):
     """
     Do NOT use this method and instead use the SecondGuard HSM for better security.
     """
 
     assert type(ciphertext_b64) is bytes, ciphertext_b64
-    _assert_valid_privkey(privkey_str)
+    _assert_valid_privkey(rsa_privkey)
 
     ciphertext_bytes = b64decode(ciphertext_b64)
 
-    privkey_bytes = privkey_str.encode()
+    privkey_bytes = rsa_privkey.encode()
     rsa_key = serialization.load_pem_private_key(privkey_bytes, password=password, backend=default_backend())
 
     # Construct the padding. Note that the padding differs based on key choice.

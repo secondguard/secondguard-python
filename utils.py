@@ -1,10 +1,20 @@
 import requests
 
 # Hack (make this somethign we can pass around?)
-# BASE_URL = "http://localhost:1323/"
-BASE_URL = "https://secondguard.uc.r.appspot.com/"
+BASE_URL = "http://localhost:1323/"
+# BASE_URL = "https://secondguard.uc.r.appspot.com/"
 
 HEX_CHARS = set('0123456789abcdef')
+
+# For testing only, limited to 1 insecure pubkey, rate-limiting shared across all users
+TESTING_API_TOKEN = 'SG-XXXX'
+
+
+
+with open('localprivkey.pem', 'r') as f:
+    PRIVKEY_STR = f.read()
+with open('localpubkey.crt', 'r') as f:
+    PUBKEY_STR = f.read()
 
 
 def _assert_hex(string):
