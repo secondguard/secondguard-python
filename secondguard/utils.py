@@ -1,8 +1,8 @@
 import requests
 
 # Hack (make this somethign we can pass around?)
+BASE_URL = "https://www.secondguard.com/"
 # BASE_URL = "http://localhost:1323/"
-BASE_URL = "https://secondguard.uc.r.appspot.com/"
 
 HEX_CHARS = set('0123456789abcdef')
 
