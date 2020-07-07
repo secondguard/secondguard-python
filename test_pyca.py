@@ -1,16 +1,16 @@
 from os import urandom
-from pyca import (
+from secondguard.pyca import (
     symmetric_encrypt,
     symmetric_decrypt,
     asymmetric_encrypt,
     asymmetric_decrypt,
 )
 
-from utils import _fetch_testing_pubkey
+from secondguard.utils import _fetch_testing_pubkey
 
 
 # TODO: move to a setup class?
-from utils import PUBKEY_STR, PRIVKEY_STR
+from secondguard.utils import PUBKEY_STR, PRIVKEY_STR
 
 # TODO: come up with less HACKey way to test many times
 # TODO: add static decrypt test vectors

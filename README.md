@@ -1,33 +1,25 @@
 ##
 
-#### This is a rough proof-of-concept, do not use this with real data!
+## This is a rough proof-of-concept, do not use this with real data!
 ### Client and server API subject to breaking changes
 
-Create a virtualenv, activate and install `requirements.txt`
+Create a virtualenv, activate, install `requirements.txt` and then this repo
 ```bash
-$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt
+$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable .
 ```
 
-Run tests:
+Run tests to confim it's working (add a `-v` flag for more output):
 ```bash
-$ py.test -v
+$ py.test
 =============================== test session starts ===============================
-platform darwin -- Python 3.7.7, pytest-5.4.3, py-1.9.0, pluggy-0.13.1 -- /Users/mflaxman/workspace/secondguard/.venv3/bin/python
-cachedir: .pytest_cache
-rootdir: /Users/mflaxman/workspace/secondguard
-collected 3 items                                                                 
-
-test_client.py::test_sg_hybrid_encryption PASSED                            [ 33%]
-test_pyca.py::test_symmetric PASSED                                         [ 66%]
-test_pyca.py::test_asymmetric PASSED                                        [100%]
-
+...
 ================================ 3 passed in 0.94s ================================
 
 ```
 
 Encrypt some data using test API key:
 ```python
-from client import secondguard_encrypt, secondguard_decrypt
+from secondguard import sg_hybrid_encrypt, sg_hybrid_decrypt
 
 # Testing credentials:
 your_secret = b"attack at dawn!"
@@ -37,7 +29,7 @@ YOUR_PUBKEY = '''-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMII
 # Save this in your DB (only local encryption happens here):
 local_ciphertext, sg_recovery_instructions = secondguard_encrypt(
     to_encrypt=your_secret,
-    pubkey=YOUR_PUBKEY, 
+    rsa_pubkey=YOUR_PUBKEY, 
     api_token=API_TOKEN,
 )
 
@@ -58,5 +50,5 @@ $ pip-compile requirements.in
 
 Note that these INSECURE testing RSA keys were created with the following:
 ```bash
-$ openssl genrsa -out localprivkey.pem 4096 && openssl rsa -in localprivkey.pem -pubout -out localpubkey.crt
+$ openssl genrsa -out insecureprivkey.pem 4096 && openssl rsa -in insecureprivkey.pem -pubout -out insecurepubkey.crt
 ```

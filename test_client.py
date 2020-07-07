@@ -1,7 +1,7 @@
 from os import urandom
-from utils import _fetch_testing_pubkey, assert_same, PUBKEY_STR, TESTING_API_TOKEN
 
-from client import secondguard_encrypt, secondguard_decrypt
+from secondguard.utils import _fetch_testing_pubkey, assert_same, PUBKEY_STR, TESTING_API_TOKEN
+from secondguard.main import secondguard_encrypt, secondguard_decrypt
 
 
 # TODO: add static decrypt test vectors

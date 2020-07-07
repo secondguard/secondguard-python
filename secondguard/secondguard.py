@@ -1,4 +1,4 @@
-from utils import BASE_URL
+from .utils import BASE_URL
 import requests
 import json
 

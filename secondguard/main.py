@@ -1,8 +1,10 @@
-from secondguard import perform_asymmetric_decrypt_secondguard
-from pyca import symmetric_encrypt, symmetric_decrypt, asymmetric_encrypt, asymmetric_decrypt
-from utils import _assert_valid_api_token, _assert_valid_pubkey
+from secondguard.secondguard import perform_asymmetric_decrypt_secondguard
+from secondguard.pyca import symmetric_encrypt, symmetric_decrypt, asymmetric_encrypt, asymmetric_decrypt
+from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
+
+# FIXME: rename hybrid encrypt/decrypt!
 
 def secondguard_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
     """

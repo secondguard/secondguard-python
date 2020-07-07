@@ -1,10 +1,11 @@
+from base64 import b64encode, b64decode, urlsafe_b64decode
+
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 
-from utils import assert_same, _assert_valid_privkey, _assert_valid_pubkey
-from base64 import b64encode, b64decode, urlsafe_b64decode
+from secondguard.utils import assert_same, _assert_valid_privkey, _assert_valid_pubkey
 
 
 def symmetric_encrypt(to_encrypt, confirm=True):

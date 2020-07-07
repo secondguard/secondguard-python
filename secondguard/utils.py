@@ -11,10 +11,9 @@ HEX_CHARS = set('0123456789abcdef')
 TESTING_API_TOKEN = 'SG-XXXX'
 
 
-
-with open('localprivkey.pem', 'r') as f:
+with open('insecureprivkey.pem', 'r') as f:
     PRIVKEY_STR = f.read()
-with open('localpubkey.crt', 'r') as f:
+with open('insecurepubkey.crt', 'r') as f:
     PUBKEY_STR = f.read()
 
 
