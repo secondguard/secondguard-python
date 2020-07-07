@@ -33,7 +33,7 @@ local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
     api_token=API_TOKEN,
 )
 
-# recover from SecondGuard (asymmetric decryption takes place via API and then symmetric decryption takes place locally):
+# Recover using SecondGuard (asymmetric decryption takes place via API and then symmetric decryption takes place locally):
 secret_recovered, rate_limit_info = sg_hybrid_decrypt( 
     local_ciphertext_to_decrypt=local_ciphertext, 
     sg_recovery_instructions=sg_recovery_instructions,
