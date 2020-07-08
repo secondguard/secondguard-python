@@ -21,14 +21,14 @@ your_secret = b"attack at dawn!"
 API_TOKEN = 'SG-XXXX'
 YOUR_PUBKEY = '''-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAxY9sgHqrHRkfppnOJACr\nhwYxHP4d/OUUzbTiNFfcFoCyCUCL6dnLql1WPfaUyYWeLEQ4NTFI9Nfdy9tka6ZO\n75V3LCW5l2TMkbb0BvWnAcIK3lMY19kfFyImAoLvcZcAevi0ogkOn20zDrxVhlpv\nQAu3OMCQmc1aMgv6pp1FO4v3OjiXNp1AQQw8CIHnQzlLmGSMeUK1hdCcSGXq5qLA\nXrKwdkA8K6gDi67A43ZcWzew1KF8OwtA2WyLRfbzGaXqqq2pLNcrt90v64azkk+Q\nn8JTJym7k30Jv7zbhsGR08dvk6zn7TrNMn1TsIwflDFGSpzSCAQcz1gR+0GiwGvk\nqQkKeNhTAUHOdf7IONEpmZ+46O4uUmtAXu5lI0D5dPtl2M5ZtAjxRMvXX65QeNd7\nMwcoXy5LaUMnDVl8Sq8OL8dj8PMKiqO7m/yMuMfXgEd9EcdzFt80rRUCH3/H3+MT\nQMZdlbNASA5d//MOxERsb1ildEyfTQpSWvyeGIpCCtPmq3yJbKat95RTUX4uJPLi\nKFCifkVhirl+XxdDK6L0gly0kZEW41qyKZL+++5M6NalsBsMr5AFAUF0Ws4E+aWf\n6Zm8FDi6G4ZpAmVpP6bmqY+GoTFBQKXezICAwsJ6Dhy8UUHxDRQIiNTSLVnO5wgR\ncRfaU/jG6gorIFQvw8mw2hcCAwEAAQ==\n-----END PUBLIC KEY-----\n'''
 
-# Save this in your DB (only local encryption happens here):
+# Encrypt locally (symmetrically and asymmetrically) and save the results to your DB:
 local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
     to_encrypt=your_secret,
     rsa_pubkey=YOUR_PUBKEY, 
     api_token=API_TOKEN,
 )
 
-# Recover using SecondGuard (asymmetric decryption takes place via API and then symmetric decryption takes place locally):
+# Asymmetrically decrypt recovery instructions (via SecondGuard API) and use it to symmetrically decrypt local ciphertext: 
 secret_recovered, rate_limit_info = sg_hybrid_decrypt( 
     local_ciphertext_to_decrypt=local_ciphertext, 
     sg_recovery_instructions=sg_recovery_instructions,
