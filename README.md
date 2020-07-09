@@ -37,15 +37,6 @@ secret_recovered, rate_limit_info = sg_hybrid_decrypt(
 assert your_secret == secret_recovered
 ```
 
-## Tests
-Run tests to confim it's working (add a `-v` flag for more output):
-```bash
-$ pytest
-=============================== test session starts ===============================
-...
-================================ 3 passed in 0.94s ================================
-```
-
 See [test_client.py](test_client.py) to see how the protocol works.
 
 ---
@@ -63,6 +54,7 @@ Create & activate a virtual environment, install dependencies & this library, th
 ```bash
 $ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable . && pytest -v
 ```
+(unfortunately, running tests requires intalling a `--editable` local version of this repo)
 
 To update `requirements.txt` change `requirements.in` and then run:
 ```bash
