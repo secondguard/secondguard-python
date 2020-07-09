@@ -1,16 +1,14 @@
 from os import urandom
 
-from secondguard.utils import _fetch_testing_pubkey, assert_same, PUBKEY_STR, TESTING_API_TOKEN
+from secondguard.utils import assert_same
 from secondguard.main import sg_hybrid_encrypt, sg_hybrid_decrypt
+
+from secondguard.testing_utils import PUBKEY_STR, TESTING_API_TOKEN, _fetch_testing_pubkey
 
 
 # TODO: add static decrypt test vectors
 
 TESTING_RSA_PUBKEY = _fetch_testing_pubkey()
-
-for cnt in range(5):
-    pass
-
 
 def perform_sg_hybrid_encryption_and_decryption(num_bytes=1000):
     # This represents the info you're trying to protect (could be of any length):

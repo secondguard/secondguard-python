@@ -6,16 +6,6 @@ BASE_URL = "https://www.secondguard.com/"
 
 HEX_CHARS = set('0123456789abcdef')
 
-# For testing only
-# Limited to 1 INSECURE pubkey, rate-limiting shared across all users
-TESTING_API_TOKEN = 'SG-XXXX'
-
-
-with open('insecureprivkey.pem', 'r') as f:
-    PRIVKEY_STR = f.read()
-with open('insecurepubkey.crt', 'r') as f:
-    PUBKEY_STR = f.read()
-
 
 def _assert_hex(string):
     assert type(string) is str, string
@@ -36,10 +26,6 @@ def _assert_valid_privkey(privkey_str):
     assert type(privkey_str) is str, privkey_str
     assert privkey_str.strip().startswith('-----BEGIN RSA PRIVATE KEY-----'), privkey_str
     assert privkey_str.strip().endswith('-----END RSA PRIVATE KEY-----'), privkey_str
-
-
-def _fetch_testing_pubkey(url=BASE_URL + "static/pubkey.crt"):
-    return requests.get(url).content.decode('utf-8')
 
 
 def _write_bytes_to_file(some_bytes, filepath):

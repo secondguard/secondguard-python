@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/secondguard/secondguard-python/',
-    version='2.1.3',
+    version='2.1.4',
     install_requires=REQUIREMENTS,
     packages=find_packages(),
     classifiers=[

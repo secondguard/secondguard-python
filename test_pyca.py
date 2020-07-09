@@ -6,11 +6,8 @@ from secondguard.pyca import (
     asymmetric_decrypt,
 )
 
-from secondguard.utils import _fetch_testing_pubkey
-
-
 # TODO: move to a setup class?
-from secondguard.utils import PUBKEY_STR, PRIVKEY_STR
+from secondguard.testing_utils import PUBKEY_STR, PRIVKEY_STR, _fetch_testing_pubkey
 
 # TODO: come up with less HACKey way to test many times
 # TODO: add static decrypt test vectors
