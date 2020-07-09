@@ -1,12 +1,11 @@
-## This is not production-ready code, do not use this with real data!
-### Client and server API subject to breaking changes
+## SecondGuard Python Client Library
 
 
 ## Setup
 
-Create a virtualenv, activate, install `requirements.txt` (including this repo) and run tests:
+Install
 ```bash
-$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable . && pytest -v
+$ pip3 install --upgrade secondguard
 ```
 
 ## Use
@@ -38,28 +37,46 @@ secret_recovered, rate_limit_info = sg_hybrid_decrypt(
 assert your_secret == secret_recovered
 ```
 
-### Further Reading
-You can see the basics of how this hybrid encryption protocol works either in [test_client.py](test_client.py)
-
----
-
-### Details
-
+## Tests
 Run tests to confim it's working (add a `-v` flag for more output):
 ```bash
 $ pytest
 =============================== test session starts ===============================
 ...
 ================================ 3 passed in 0.94s ================================
-
 ```
 
-Update `requirements.txt`:
+See [test_client.py](test_client.py) to see how the protocol works.
+
+---
+
+### Development
+
+Pull requests welcome!
+
+Check out the code:
+```bash
+$ git checkout git@github.com:secondguard/secondguard-python.git && cd secondguard-python.git
+```
+
+Create & activate a virtual environment, install dependencies & this library, then run tests:
+```bash
+$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable . && pytest -v
+```
+
+To update `requirements.txt` change `requirements.in` and then run:
 ```bash
 $ pip-compile requirements.in
 ```
 
-Note that these INSECURE testing RSA keys were created with the following:
+How these INSECURE testing RSA keys were created:
 ```bash
 $ openssl genrsa -out insecureprivkey.pem 4096 && openssl rsa -in insecureprivkey.pem -pubout -out insecurepubkey.crt
+```
+
+Package and upload to [PyPI](https://pypi.org/project/secondguard/):
+```bash
+$ python3 setup.py sdist bdist_wheel
+$ python3 -m pip install --upgrade twine
+$ python3 -m twine upload dist/*
 ```

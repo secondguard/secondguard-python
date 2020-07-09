@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 
 # read the contents of your README file
 from os import path
@@ -16,17 +13,22 @@ REQUIREMENTS = [i.strip() for i in open("requirements.in").readlines()]
 
 setup(
     name='secondguard',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    version='0.81',
-    description='SecondGuard Python Library',
     author='Michael Flaxman',
     author_email='python-library@secondguard.com',
+    description='SecondGuard Python Library',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/secondguard/secondguard-python/',
+    version='2.1.3',
     install_requires=REQUIREMENTS,
-    # FIXME: update once on PyPi
-    # packages=['secondguard-python'],
+    packages=find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires='>=3.3',
     include_package_data=True,
-    package_data={"": ["LICENSE"]}
+    package_data={"": ["LICENSE"]},
 )
 
