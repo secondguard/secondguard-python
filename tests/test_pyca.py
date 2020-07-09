@@ -7,7 +7,7 @@ from secondguard.pyca import (
 )
 
 # TODO: move to a setup class?
-from secondguard.testing_utils import PUBKEY_STR, PRIVKEY_STR, _fetch_testing_pubkey
+from tests.testing_utils import PUBKEY_STR, PRIVKEY_STR, _fetch_testing_pubkey
 
 # TODO: come up with less HACKey way to test many times
 # TODO: add static decrypt test vectors

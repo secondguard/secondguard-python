@@ -3,7 +3,7 @@ from os import urandom
 from secondguard.utils import assert_same
 from secondguard.main import sg_hybrid_encrypt, sg_hybrid_decrypt
 
-from secondguard.testing_utils import PUBKEY_STR, TESTING_API_TOKEN, _fetch_testing_pubkey
+from tests.testing_utils import PUBKEY_STR, TESTING_API_TOKEN, _fetch_testing_pubkey
 
 
 # TODO: add static decrypt test vectors
