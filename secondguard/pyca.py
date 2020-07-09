@@ -30,7 +30,6 @@ def symmetric_decrypt(ciphertext, key):
     return f.decrypt(ciphertext)
 
 
-
 def asymmetric_encrypt(bytes_to_encrypt, rsa_pubkey, partial_confirm=True):
     assert type(bytes_to_encrypt) is bytes, bytes_to_encrypt
     _assert_valid_pubkey(rsa_pubkey)
@@ -61,7 +60,9 @@ def asymmetric_decrypt(ciphertext_b64, rsa_privkey, password=None):
     ciphertext_bytes = b64decode(ciphertext_b64)
 
     privkey_bytes = rsa_privkey.encode()
-    rsa_key = serialization.load_pem_private_key(privkey_bytes, password=password, backend=default_backend())
+    rsa_key = serialization.load_pem_private_key(
+        privkey_bytes, password=password, backend=default_backend()
+    )
 
     # Construct the padding. Note that the padding differs based on key choice.
     sha256 = hashes.SHA256()
