@@ -30,7 +30,7 @@ def symmetric_decrypt(ciphertext, key):
     return f.decrypt(ciphertext)
 
 
-def asymmetric_encrypt(bytes_to_encrypt, rsa_pubkey, partial_confirm=True):
+def asymmetric_encrypt(bytes_to_encrypt, rsa_pubkey):
     assert type(bytes_to_encrypt) is bytes, bytes_to_encrypt
     _assert_valid_pubkey(rsa_pubkey)
 
