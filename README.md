@@ -10,7 +10,7 @@ $ pip3 install --upgrade secondguard
 
 ## Use
 
-Encrypt some data using test API key:
+Encrypt some data using the testing API token and RSA pubkey (no account needed):
 ```python
 from secondguard import sg_hybrid_encrypt, sg_hybrid_decrypt
 
@@ -37,7 +37,7 @@ secret_recovered, rate_limit_info = sg_hybrid_decrypt(
 assert your_secret == secret_recovered
 ```
 
-See [test_client.py](tests/test_client.py) to see how the protocol works.
+See [test_client.py](https://github.com/secondguard/secondguard-python/blob/master/tests/test_client.py) to see how the protocol works.
 
 ---
 
