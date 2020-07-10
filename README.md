@@ -37,7 +37,7 @@ secret_recovered, rate_limit_info = sg_hybrid_decrypt(
 assert your_secret == secret_recovered
 ```
 
-See [test_client.py](test_client.py) to see how the protocol works.
+See [test_client.py](tests/test_client.py) to see how the protocol works.
 
 ---
 
