@@ -74,7 +74,7 @@ tests/test_utils.py::test_dsha256 PASSED                                        
 ======================================= 4 passed in 0.98s =======================================
 ```
 
-To update `requirements.txt` change `requirements.in` and then run (requires [pip-tools](https://github.com/jazzband/pip-tools):
+To update `requirements.txt` change `requirements.in` and then run (requires [pip-tools](https://github.com/jazzband/pip-tools)):
 ```bash
 $ pip-compile requirements.in
 ```
