@@ -1,22 +1,19 @@
-## SecondGuard Python Client Library
+# SecondGuard Python Client Library
 
+### Quickstart
 
-## Setup
-
-Install
+Install from [PyPI](https://pypi.org/project/secondguard/):
 ```bash
 $ pip3 install --upgrade secondguard
 ```
 
-## Use
-
-Encrypt some data using the testing API token and RSA pubkey (no account needed):
+Encrypt using the testing API token and testing RSA pubkey (no account needed):
 ```python
 from secondguard import sg_hybrid_encrypt, sg_hybrid_decrypt
 
 your_secret = b"attack at dawn!"
 
-# Testing credentials (normally saved in your app's config):
+# Testing credentials/pubkey (normally saved in your app's config):
 API_TOKEN = 'SG-XXXX'
 YOUR_PUBKEY = '''-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAxY9sgHqrHRkfppnOJACr\nhwYxHP4d/OUUzbTiNFfcFoCyCUCL6dnLql1WPfaUyYWeLEQ4NTFI9Nfdy9tka6ZO\n75V3LCW5l2TMkbb0BvWnAcIK3lMY19kfFyImAoLvcZcAevi0ogkOn20zDrxVhlpv\nQAu3OMCQmc1aMgv6pp1FO4v3OjiXNp1AQQw8CIHnQzlLmGSMeUK1hdCcSGXq5qLA\nXrKwdkA8K6gDi67A43ZcWzew1KF8OwtA2WyLRfbzGaXqqq2pLNcrt90v64azkk+Q\nn8JTJym7k30Jv7zbhsGR08dvk6zn7TrNMn1TsIwflDFGSpzSCAQcz1gR+0GiwGvk\nqQkKeNhTAUHOdf7IONEpmZ+46O4uUmtAXu5lI0D5dPtl2M5ZtAjxRMvXX65QeNd7\nMwcoXy5LaUMnDVl8Sq8OL8dj8PMKiqO7m/yMuMfXgEd9EcdzFt80rRUCH3/H3+MT\nQMZdlbNASA5d//MOxERsb1ildEyfTQpSWvyeGIpCCtPmq3yJbKat95RTUX4uJPLi\nKFCifkVhirl+XxdDK6L0gly0kZEW41qyKZL+++5M6NalsBsMr5AFAUF0Ws4E+aWf\n6Zm8FDi6G4ZpAmVpP6bmqY+GoTFBQKXezICAwsJ6Dhy8UUHxDRQIiNTSLVnO5wgR\ncRfaU/jG6gorIFQvw8mw2hcCAwEAAQ==\n-----END PUBLIC KEY-----\n'''
 
@@ -34,29 +31,46 @@ secret_recovered, rate_limit_info = sg_hybrid_decrypt(
     api_token=API_TOKEN,
 )
 
-assert your_secret == secret_recovered
+if your_secret == secret_recovered:
+    print("Your secret was recovered: %s" % secret_recovered)
 ```
 
 See [test_client.py](https://github.com/secondguard/secondguard-python/blob/master/tests/test_client.py) to see how the protocol works.
 
 ---
 
-### Development
+### Under the Hood
 
-Pull requests welcome!
+Pull requests with test coverage are welcome!
 
 Check out the code:
 ```bash
 $ git checkout git@github.com:secondguard/secondguard-python.git && cd secondguard-python.git
 ```
 
-Create & activate a virtual environment, install dependencies & this library, then run tests:
+Create & activate a virtual environment, install dependencies & this library
 ```bash
-$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable . && pytest -v
+$ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r requirements.txt && pip3 install --editable .
 ```
-(unfortunately, running tests requires intalling a `--editable` local version of this repo)
 
-To update `requirements.txt` change `requirements.in` and then run:
+Run tests (running tests requires having previously intalled an `--editable` local version of this repo):
+```
+$ pytest -v
+======================================= test session starts =======================================
+platform darwin -- Python 3.7.8, pytest-4.4.0, py-1.8.0, pluggy-0.12.0 -- /usr/local/opt/python/bin/python3.7
+cachedir: .pytest_cache
+rootdir: /Users/mflaxman/workspace/secondguard-python
+plugins: cov-2.6.1
+collected 3 items                                                                                 
+
+tests/test_client.py::test_sg_hybrid_encryption_and_decryption PASSED                       [ 33%]
+tests/test_pyca.py::test_symmetric PASSED                                                   [ 66%]
+tests/test_pyca.py::test_asymmetric PASSED                                                  [100%]
+
+==================================== 3 passed in 1.32 seconds =====================================
+```
+
+To update `requirements.txt` change `requirements.in` and then run (requires [pip-tools](https://github.com/jazzband/pip-tools):
 ```bash
 $ pip-compile requirements.in
 ```
@@ -64,11 +78,4 @@ $ pip-compile requirements.in
 How these INSECURE testing RSA keys were created:
 ```bash
 $ openssl genrsa -out insecureprivkey.pem 4096 && openssl rsa -in insecureprivkey.pem -pubout -out insecurepubkey.crt
-```
-
-Package and upload to [PyPI](https://pypi.org/project/secondguard/):
-```bash
-$ python3 setup.py sdist bdist_wheel
-$ python3 -m pip install --upgrade twine
-$ python3 -m twine upload dist/*
 ```
