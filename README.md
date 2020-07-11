@@ -1,6 +1,6 @@
 # SecondGuard Python Client Library
 
-### Quickstart
+## Quickstart
 
 Install from [PyPI](https://pypi.org/project/secondguard/):
 ```bash
@@ -18,7 +18,7 @@ API_TOKEN = 'SG-XXXX'
 YOUR_PUBKEY = '''-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAxY9sgHqrHRkfppnOJACr\nhwYxHP4d/OUUzbTiNFfcFoCyCUCL6dnLql1WPfaUyYWeLEQ4NTFI9Nfdy9tka6ZO\n75V3LCW5l2TMkbb0BvWnAcIK3lMY19kfFyImAoLvcZcAevi0ogkOn20zDrxVhlpv\nQAu3OMCQmc1aMgv6pp1FO4v3OjiXNp1AQQw8CIHnQzlLmGSMeUK1hdCcSGXq5qLA\nXrKwdkA8K6gDi67A43ZcWzew1KF8OwtA2WyLRfbzGaXqqq2pLNcrt90v64azkk+Q\nn8JTJym7k30Jv7zbhsGR08dvk6zn7TrNMn1TsIwflDFGSpzSCAQcz1gR+0GiwGvk\nqQkKeNhTAUHOdf7IONEpmZ+46O4uUmtAXu5lI0D5dPtl2M5ZtAjxRMvXX65QeNd7\nMwcoXy5LaUMnDVl8Sq8OL8dj8PMKiqO7m/yMuMfXgEd9EcdzFt80rRUCH3/H3+MT\nQMZdlbNASA5d//MOxERsb1ildEyfTQpSWvyeGIpCCtPmq3yJbKat95RTUX4uJPLi\nKFCifkVhirl+XxdDK6L0gly0kZEW41qyKZL+++5M6NalsBsMr5AFAUF0Ws4E+aWf\n6Zm8FDi6G4ZpAmVpP6bmqY+GoTFBQKXezICAwsJ6Dhy8UUHxDRQIiNTSLVnO5wgR\ncRfaU/jG6gorIFQvw8mw2hcCAwEAAQ==\n-----END PUBLIC KEY-----\n'''
 
 # Encrypt locally (symmetrically and asymmetrically) and save the results to your DB:
-local_ciphertext, sg_recovery_instructions, _ = sg_hybrid_encrypt(
+local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
     to_encrypt=your_secret,
     rsa_pubkey=YOUR_PUBKEY, 
     api_token=API_TOKEN,
@@ -37,11 +37,13 @@ if your_secret == secret_recovered:
 
 See [test_client.py](https://github.com/secondguard/secondguard-python/blob/master/tests/test_client.py) to see how the protocol works.
 
-The `_` on the `sg_hybrid_encrypt` method is hiding the sha256 hash digest of the local encryption key used for symmetric encryption. This optional feature allows for third party audit logging of your decryption requests.
+### Audit Log
+For audit logging of decryption requests, we recommend storing the sha256 hash digest of the `sg_recovery_instructions` (base64 decoded) in an indexed column of your database. This makes it easy to see which records have been decrypted if your servers are breached.
+
 
 ---
 
-### Under the Hood
+## Under the Hood
 
 Pull requests with test coverage are welcome!
 

@@ -5,7 +5,7 @@ from secondguard.pyca import (
     asymmetric_encrypt,
     asymmetric_decrypt,
 )
-from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey, dsha256
+from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
 def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
@@ -22,11 +22,10 @@ def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
     _assert_valid_api_token(api_token)
 
     local_ciphertext, localkey = symmetric_encrypt(to_encrypt=to_encrypt, confirm=confirm)
-    local_symmetric_key_dsha256 = dsha256(localkey)
     asymm_ciphertext = asymmetric_encrypt(bytes_to_encrypt=localkey, rsa_pubkey=rsa_pubkey)
 
     # Save this locally in our DB:
-    return local_ciphertext, asymm_ciphertext, local_symmetric_key_dsha256
+    return local_ciphertext, asymm_ciphertext
 
 
 def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api_token):
@@ -48,5 +47,5 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
         ciphertext=local_ciphertext_to_decrypt, key=symmetric_key_recovered
     )
 
-    # Return the recovered secret, and recovery_info (rate limit info as well as the dsha256 of the original symmetric key):
+    # Return the recovered secret, and recovery_info (rate limit info as well as the dsha256 of the base64 decoded sg_recovery_instructions):
     return secret_recovered, recovery_info
