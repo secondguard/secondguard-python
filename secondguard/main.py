@@ -5,7 +5,7 @@ from secondguard.pyca import (
     asymmetric_encrypt,
     asymmetric_decrypt,
 )
-from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey
+from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey, dsha256
 
 
 def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
@@ -21,11 +21,12 @@ def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=True):
     _assert_valid_pubkey(rsa_pubkey)
     _assert_valid_api_token(api_token)
 
-    local_ciphertext, key = symmetric_encrypt(to_encrypt=to_encrypt, confirm=confirm)
-    asymm_ciphertext = asymmetric_encrypt(bytes_to_encrypt=key, rsa_pubkey=rsa_pubkey)
+    local_ciphertext, localkey = symmetric_encrypt(to_encrypt=to_encrypt, confirm=confirm)
+    local_symmetric_key_dsha256 = dsha256(localkey)
+    asymm_ciphertext = asymmetric_encrypt(bytes_to_encrypt=localkey, rsa_pubkey=rsa_pubkey)
 
     # Save this locally in our DB:
-    return local_ciphertext, asymm_ciphertext
+    return local_ciphertext, asymm_ciphertext, local_symmetric_key_dsha256
 
 
 def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api_token):
@@ -35,17 +36,17 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
     assert type(local_ciphertext_to_decrypt) is bytes, local_ciphertext_to_decrypt
 
     # Recover symmetric key from SG HSM
-    decrypted_recovery_instructions = perform_asymmetric_decrypt_secondguard(
+    recovery_info = perform_asymmetric_decrypt_secondguard(
         todecrypt_b64=sg_recovery_instructions, api_token=api_token
     )
 
     # Grab the key to use for local decryption
-    symmetric_key_recovered = decrypted_recovery_instructions.pop("decrypted")
+    symmetric_key_recovered = recovery_info.pop("decrypted")
 
     # Locally decrypt ciphertext using recovered key
     secret_recovered = symmetric_decrypt(
         ciphertext=local_ciphertext_to_decrypt, key=symmetric_key_recovered
     )
 
-    # Return the recovered secret and the rate limit info (decrypted_recovery_instructions is now just rate limit info):
-    return secret_recovered, decrypted_recovery_instructions
+    # Return the recovered secret, and recovery_info (rate limit info as well as the dsha256 of the original symmetric key):
+    return secret_recovered, recovery_info

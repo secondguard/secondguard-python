@@ -1,4 +1,5 @@
 import requests
+from hashlib import sha256
 
 # Hack (make this somethign we can pass around?)
 BASE_URL = "https://www.secondguard.com/"
@@ -48,3 +49,12 @@ def _write_str_to_file(string, filepath):
 def assert_same(input1, input2):
     if input1 != input2:
         raise Exception("Have: %s\nWant: %s" % (input1, input2))
+
+
+def dsha256(some_bytes):
+    """
+    Calculate the double-sha256 hash of some bytes and return hex string
+    """
+    # TODO: don't use hexdigest
+    assert type(some_bytes) is bytes, some_bytes
+    return sha256(sha256(some_bytes).hexdigest().encode()).hexdigest()
