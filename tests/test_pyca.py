@@ -1,3 +1,4 @@
+from base64 import b64decode
 from os import urandom
 from secondguard.pyca import (
     symmetric_encrypt,
@@ -27,10 +28,10 @@ def test_symmetric(cnt=100):
 
 
 def perform_asymmetric_encryption_decryption(rsa_privkey, rsa_pubkey):
-    bytes_to_encrypt = urandom(32)
     ciphertext_b64 = asymmetric_encrypt(
         bytes_to_encrypt=bytes_to_encrypt, rsa_pubkey=PUBKEY_STR
     )
+    assert len(b64decode(ciphertext_b64)) == 512
     recovered_bytes = asymmetric_decrypt(
         ciphertext_b64=ciphertext_b64, rsa_privkey=PRIVKEY_STR
     )
