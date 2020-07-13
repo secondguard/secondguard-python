@@ -23,23 +23,24 @@ def perform_symmetric_encryption_decryption(num_bytes=1000):
 
 def test_symmetric(cnt=100):
     for attempt in range(cnt):
-        print(attempt)
         perform_symmetric_encryption_decryption(num_bytes=attempt * 100)
 
 
-def perform_asymmetric_encryption_decryption(rsa_privkey, rsa_pubkey):
+def perform_asymmetric_encryption_decryption(rsa_privkey, rsa_pubkey, secret):
     ciphertext_b64 = asymmetric_encrypt(
-        bytes_to_encrypt=bytes_to_encrypt, rsa_pubkey=PUBKEY_STR
+        bytes_to_encrypt=secret, rsa_pubkey=PUBKEY_STR
     )
     assert len(b64decode(ciphertext_b64)) == 512
-    recovered_bytes = asymmetric_decrypt(
+    recovered_secret = asymmetric_decrypt(
         ciphertext_b64=ciphertext_b64, rsa_privkey=PRIVKEY_STR
     )
-    assert bytes_to_encrypt == recovered_bytes
+    assert secret == recovered_secret
 
 
 def test_asymmetric(cnt=10):
-    for attempt in range(cnt):
+    for _ in range(cnt):
+        # This represents the info you're trying to protect:
+        secret = urandom(64)
         perform_asymmetric_encryption_decryption(
-            rsa_privkey=PRIVKEY_STR, rsa_pubkey=PUBKEY_STR
+            rsa_privkey=PRIVKEY_STR, rsa_pubkey=PUBKEY_STR, secret=secret,
         )

@@ -1,3 +1,6 @@
+from base64 import b64decode
+from hashlib import sha256
+
 from secondguard.secondguard import perform_asymmetric_decrypt_secondguard
 from secondguard.pyca import (
     symmetric_encrypt,
@@ -49,3 +52,12 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
 
     # Return the recovered secret, and recovery_info (rate limit info as well as the dsha256 of the base64 decoded sg_recovery_instructions):
     return secret_recovered, recovery_info
+
+
+def sg_hybrid_encrypt_with_auditlog(to_encrypt, rsa_pubkey, api_token, confirm=True):
+    """
+    Convenience wrapper for sg_hybrid_encrypt method that also calculates the sha 256 hash digest of the asymetrically-encrypted symmetric key.
+    This should be saved in your database with an index for easy querying.
+    """
+    local_ciphertext, asymm_ciphertext = sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, confirm=confirm)
+    return local_ciphertext, asymm_ciphertext, sha256(b64decode(asymm_ciphertext)).hexdigest()

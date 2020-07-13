@@ -38,7 +38,7 @@ if your_secret == secret_recovered:
 See [test_client.py](https://github.com/secondguard/secondguard-python/blob/master/tests/test_client.py) to see how the protocol works.
 
 ### Audit Log
-For audit logging of decryption requests, we recommend storing the sha256 hash digest of the `sg_recovery_instructions` (base64 decoded) in an indexed column of your database. This makes it easy to see which records have been decrypted if your servers are breached.
+For audit logging of decryption requests, we recommend storing the sha256 hash digest of the `sg_recovery_instructions` (base64 decoded) in an indexed column of your database. This makes it easy to see which records have been decrypted if your servers are breached. See the `sg_hybrid_encrypt_with_auditlog()` method with test coverage in [test_client.py](https://github.com/secondguard/secondguard-python/blob/master/tests/test_client.py).
 
 
 ---
