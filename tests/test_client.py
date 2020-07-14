@@ -12,6 +12,16 @@ from tests.testing_utils import PUBKEY_STR, TESTING_API_TOKEN, _fetch_testing_pu
 
 TESTING_RSA_PUBKEY = _fetch_testing_pubkey()
 
+def _assert_valid_recovery_info(recovery_info_dict):
+    # TODO: test actual rate limit behavior in recovery_info
+    for k in ('ratelimit_limit', 'ratelimit_remaining', 'ratelimit_reset'):
+        assert type(recovery_info_dict[k]) is int, recovery_info_dict[k]
+
+    # Confirm no other fields returned
+    assert set(recovery_info_dict.keys()) == set(
+        ("ratelimit_limit", "ratelimit_remaining", "ratelimit_reset", "asymmetric_ciphertext_dsha256")
+    )
+
 
 def perform_sg_hybrid_encryption_and_decryption_with_auditlog(secret):
     local_ciphertext, sg_recovery_instructions, sg_recovery_instructions_digest = sg_hybrid_encrypt_with_auditlog(
@@ -24,15 +34,10 @@ def perform_sg_hybrid_encryption_and_decryption_with_auditlog(secret):
         api_token=TESTING_API_TOKEN,
     )
 
-    # Important test:
     assert secret == secret_recovered
-
     assert sg_recovery_instructions_digest == recovery_info["asymmetric_ciphertext_dsha256"]
+    _assert_valid_recovery_info(recovery_info)
 
-    # TODO: test actual rate limit behavior in recovery_info
-    assert set(recovery_info.keys()) == set(
-        ("ratelimit_limit", "ratelimit_remaining", "ratelimit_reset", "asymmetric_ciphertext_dsha256")
-    )
 
 
 def perform_sg_hybrid_encryption_and_decryption(secret):
@@ -46,16 +51,9 @@ def perform_sg_hybrid_encryption_and_decryption(secret):
         api_token=TESTING_API_TOKEN,
     )
 
-    # Important test:
     assert secret == secret_recovered
-
-    # sha256(sg_recovery_instructions) matches returned 
+    # sha256(sg_recovery_instructions) matches returned:
     assert sha256(b64decode(sg_recovery_instructions)).hexdigest() == recovery_info["asymmetric_ciphertext_dsha256"]
-
-    # TODO: test actual rate limit behavior in recovery_info
-    assert set(recovery_info.keys()) == set(
-        ("ratelimit_limit", "ratelimit_remaining", "ratelimit_reset", "asymmetric_ciphertext_dsha256")
-    )
 
 
 def test_sg_hybrid_encryption_and_decryption(cnt=3):
