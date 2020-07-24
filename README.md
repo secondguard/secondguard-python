@@ -60,18 +60,18 @@ $ python3 -m virtualenv .venv3 && source .venv3/bin/activate && pip3 install -r 
 Run tests (running tests requires having previously intalled an `--editable` local version of this repo):
 ```
 $ pytest -v
-====================================== test session starts ======================================
+====================================== test session starts =======================================
 platform darwin -- Python 3.7.8, pytest-5.4.3, py-1.9.0, pluggy-0.13.1 -- /Users/mflaxman/workspace/secondguard-python/.venv3/bin/python
 cachedir: .pytest_cache
 rootdir: /Users/mflaxman/workspace/secondguard-python
-collected 4 items                                                                               
+collected 3 items                                                                                
 
-tests/test_client.py::test_sg_hybrid_encryption_and_decryption PASSED                     [ 25%]
-tests/test_pyca.py::test_symmetric PASSED                                                 [ 50%]
-tests/test_pyca.py::test_asymmetric PASSED                                                [ 75%]
-tests/test_utils.py::test_dsha256 PASSED                                                  [100%]
+tests/test_client.py::test_sg_hybrid_encryption_and_decryption PASSED                      [ 33%]
+tests/test_pyca.py::test_symmetric PASSED                                                  [ 66%]
+tests/test_pyca.py::test_asymmetric PASSED                                                 [100%]
 
-======================================= 4 passed in 0.98s =======================================
+======================================= 3 passed in 0.39s ========================================
+
 ```
 
 To update `requirements.txt` change `requirements.in` and then run (requires [pip-tools](https://github.com/jazzband/pip-tools)):

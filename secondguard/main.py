@@ -50,7 +50,7 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
         ciphertext=local_ciphertext_to_decrypt, key=symmetric_key_recovered
     )
 
-    # Return the recovered secret, and recovery_info (rate limit info as well as the dsha256 of the base64 decoded sg_recovery_instructions):
+    # Return the recovered secret, and recovery_info (rate limit info & sha256(base64_decode(sg_recovery_instructions))):
     return secret_recovered, recovery_info
 
 
