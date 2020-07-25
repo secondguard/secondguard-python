@@ -17,5 +17,5 @@ with open(os.path.join(key_dir, "insecurepubkey.crt"), "r") as f:
     PUBKEY_STR = f.read()
 
 
-def _fetch_testing_pubkey(url=BASE_URL + "static/pubkey.crt"):
+def _fetch_testing_pubkey(url=BASE_URL + "static/kek.pub"):
     return requests.get(url).content.decode("utf-8")
