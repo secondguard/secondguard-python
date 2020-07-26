@@ -27,9 +27,7 @@ def test_symmetric(cnt=100):
 
 
 def perform_asymmetric_encryption_decryption(rsa_privkey, rsa_pubkey, secret):
-    ciphertext_b64 = asymmetric_encrypt(
-        bytes_to_encrypt=secret, rsa_pubkey=PUBKEY_STR
-    )
+    ciphertext_b64 = asymmetric_encrypt(bytes_to_encrypt=secret, rsa_pubkey=PUBKEY_STR)
     assert len(b64decode(ciphertext_b64)) == 512
     recovered_secret = asymmetric_decrypt(
         ciphertext_b64=ciphertext_b64, rsa_privkey=PRIVKEY_STR
@@ -42,5 +40,5 @@ def test_asymmetric(cnt=10):
         # This represents the info you're trying to protect:
         secret = urandom(64)
         perform_asymmetric_encryption_decryption(
-            rsa_privkey=PRIVKEY_STR, rsa_pubkey=PUBKEY_STR, secret=secret,
+            rsa_privkey=PRIVKEY_STR, rsa_pubkey=PUBKEY_STR, secret=secret
         )

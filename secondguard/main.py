@@ -13,7 +13,9 @@ from secondguard.pyca import (
 from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
-def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, deprecate_at=None, confirm=True):
+def sg_hybrid_encrypt(
+    to_encrypt, rsa_pubkey, api_token, deprecate_at=None, confirm=True
+):
     """
     What's happening under the hood:
       1. Symmetrically encrypt your information with a locally generated symmetric key (`key`) -> ciphertext
@@ -28,20 +30,26 @@ def sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, deprecate_at=None, conf
     assert type(deprecate_at) is datetime or deprecate_at is None, deprecate_at
 
     # Encrypt locally, generate a unique symmetric key
-    local_ciphertext, localkey = symmetric_encrypt(to_encrypt=to_encrypt, confirm=confirm)
+    local_ciphertext, localkey = symmetric_encrypt(
+        to_encrypt=to_encrypt, confirm=confirm
+    )
 
     # Create instructions to decrypt
     decryption_instructions_dict = {
-        'key': localkey.decode(),  # bytes not json serializable
+        "key": localkey.decode()  # bytes not json serializable
     }
     if deprecate_at:
-        # Round and add timezone 
-        decryption_instructions_dict['deprecate_at'] = deprecate_at.replace(microsecond=0).astimezone().isoformat()
+        # Round and add timezone
+        decryption_instructions_dict["deprecate_at"] = (
+            deprecate_at.replace(microsecond=0).astimezone().isoformat()
+        )
 
     decryption_instructions_bytes = dumps(decryption_instructions_dict).encode()
 
     # Asymmetrically encrypt decryption instructions (locally)
-    sg_recovery_instructions = asymmetric_encrypt(bytes_to_encrypt=decryption_instructions_bytes, rsa_pubkey=rsa_pubkey)
+    sg_recovery_instructions = asymmetric_encrypt(
+        bytes_to_encrypt=decryption_instructions_bytes, rsa_pubkey=rsa_pubkey
+    )
 
     # Save this locally in our DB:
     return local_ciphertext, sg_recovery_instructions
@@ -70,10 +78,18 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
     return secret_recovered, recovery_info
 
 
-def sg_hybrid_encrypt_with_auditlog(to_encrypt, rsa_pubkey, api_token, deprecate_at=None, confirm=True):
+def sg_hybrid_encrypt_with_auditlog(
+    to_encrypt, rsa_pubkey, api_token, deprecate_at=None, confirm=True
+):
     """
     Convenience wrapper for sg_hybrid_encrypt method that also calculates the sha 256 hash digest of the asymetrically-encrypted symmetric key.
     This should be saved in your database with an index for easy querying.
     """
-    local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(to_encrypt, rsa_pubkey, api_token, deprecate_at=deprecate_at, confirm=confirm)
-    return local_ciphertext, sg_recovery_instructions, sha256(b64decode(sg_recovery_instructions)).hexdigest()
+    local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
+        to_encrypt, rsa_pubkey, api_token, deprecate_at=deprecate_at, confirm=confirm
+    )
+    return (
+        local_ciphertext,
+        sg_recovery_instructions,
+        sha256(b64decode(sg_recovery_instructions)).hexdigest(),
+    )
