@@ -3,6 +3,14 @@ import requests
 import json
 
 
+class RateLimitError(Exception):
+    pass
+
+
+class BadRequestError(Exception):
+    pass
+
+
 def perform_asymmetric_decrypt_secondguard(todecrypt_b64, api_token="SG-XXXX"):
     assert type(todecrypt_b64) is bytes, todecrypt_b64
 
@@ -18,9 +26,13 @@ def perform_asymmetric_decrypt_secondguard(todecrypt_b64, api_token="SG-XXXX"):
     r = requests.post(url, json=payload, headers=headers)
     response = r.json()
 
+    if r.status_code == 400:
+        print(response)
+        raise BadRequestError("Bad Request: %s" % response)
+
     if r.status_code == 429:
         print(response)
-        raise Exception("SecondGuard Rate Limit Exceeded!: %s" % response)
+        raise RateLimitError("SecondGuard Rate Limit Exceeded: %s" % response)
 
     # Will throw an error if these fields don't exist
     return {
