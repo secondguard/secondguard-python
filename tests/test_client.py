@@ -10,7 +10,7 @@ from secondguard import (
     BadRequestError,
 )
 
-from tests.testing_utils import PUBKEY_STR, TESTING_API_TOKEN, _fetch_testing_pubkey
+from tests.utils import PUBKEY_STR, TESTING_API_TOKEN, _fetch_testing_pubkey
 
 
 # TODO: add static decrypt test vectors
