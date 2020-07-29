@@ -20,7 +20,7 @@ TESTING_RSA_PUBKEY = _fetch_testing_pubkey()
 
 def _assert_valid_recovery_info(recovery_info_dict):
     # TODO: test actual rate limit behavior in recovery_info
-    for k in ("ratelimit_limit", "ratelimit_remaining", "ratelimit_reset"):
+    for k in ("ratelimit_limit", "ratelimit_remaining", "ratelimit_resets_in"):
         assert type(recovery_info_dict[k]) is int, recovery_info_dict[k]
 
     # Confirm no other fields returned
@@ -28,7 +28,7 @@ def _assert_valid_recovery_info(recovery_info_dict):
         (
             "ratelimit_limit",
             "ratelimit_remaining",
-            "ratelimit_reset",
+            "ratelimit_resets_in",
             "request_sha256",
         )
     )

@@ -40,5 +40,5 @@ def perform_asymmetric_decrypt_secondguard(todecrypt_b64, api_token="SG-XXXX"):
         "request_sha256": response["request_sha256"],
         "ratelimit_limit": response["ratelimit_limit"],
         "ratelimit_remaining": response["ratelimit_remaining"],
-        "ratelimit_reset": response["ratelimit_reset"],
+        "ratelimit_resets_in": response["ratelimit_resets_in"],
     }
