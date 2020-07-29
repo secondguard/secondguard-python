@@ -36,8 +36,8 @@ def perform_asymmetric_decrypt_secondguard(todecrypt_b64, api_token="SG-XXXX"):
 
     # Will throw an error if these fields don't exist
     return {
-        "decrypted": response["decrypted"],
-        "asymmetric_ciphertext_sha256": response["asymmetric_ciphertext_sha256"],
+        "key_recovered": response["key_recovered"],
+        "request_sha256": response["request_sha256"],
         "ratelimit_limit": response["ratelimit_limit"],
         "ratelimit_remaining": response["ratelimit_remaining"],
         "ratelimit_reset": response["ratelimit_reset"],

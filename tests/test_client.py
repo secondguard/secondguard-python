@@ -29,7 +29,7 @@ def _assert_valid_recovery_info(recovery_info_dict):
             "ratelimit_limit",
             "ratelimit_remaining",
             "ratelimit_reset",
-            "asymmetric_ciphertext_sha256",
+            "request_sha256",
         )
     )
 
@@ -52,7 +52,7 @@ def perform_sg_hybrid_encryption_and_decryption_with_auditlog(
 
     assert secret == secret_recovered
     assert (
-        sg_recovery_instructions_digest == recovery_info["asymmetric_ciphertext_sha256"]
+        sg_recovery_instructions_digest == recovery_info["request_sha256"]
     )
     _assert_valid_recovery_info(recovery_info)
 
@@ -75,7 +75,7 @@ def perform_sg_hybrid_encryption_and_decryption(secret, deprecate_at=None):
     # sha256(sg_recovery_instructions) matches returned:
     assert (
         sha256(b64decode(sg_recovery_instructions)).hexdigest()
-        == recovery_info["asymmetric_ciphertext_sha256"]
+        == recovery_info["request_sha256"]
     )
     _assert_valid_recovery_info(recovery_info)
 

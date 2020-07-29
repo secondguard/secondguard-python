@@ -67,7 +67,7 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
     )
 
     # Grab the key to use for local decryption
-    symmetric_key_recovered = recovery_info.pop("decrypted")
+    symmetric_key_recovered = recovery_info.pop("key_recovered")
 
     # Locally decrypt ciphertext using recovered key
     secret_recovered = symmetric_decrypt(
