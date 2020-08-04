@@ -14,7 +14,7 @@ from secondguard.utils import _assert_valid_api_token, _assert_valid_pubkey
 
 
 def sg_hybrid_encrypt(
-    to_encrypt, rsa_pubkey, api_token, deprecate_at=None, confirm=True
+    to_encrypt, rsa_pubkey, deprecate_at=None, confirm=True
 ):
     """
     What's happening under the hood:
@@ -26,7 +26,6 @@ def sg_hybrid_encrypt(
     """
     assert type(to_encrypt) is bytes, to_encrypt
     _assert_valid_pubkey(rsa_pubkey)
-    _assert_valid_api_token(api_token)
     assert type(deprecate_at) is datetime or deprecate_at is None, deprecate_at
 
     # Encrypt locally, generate a unique symmetric key
@@ -79,14 +78,14 @@ def sg_hybrid_decrypt(local_ciphertext_to_decrypt, sg_recovery_instructions, api
 
 
 def sg_hybrid_encrypt_with_auditlog(
-    to_encrypt, rsa_pubkey, api_token, deprecate_at=None, confirm=True
+    to_encrypt, rsa_pubkey, deprecate_at=None, confirm=True
 ):
     """
     Convenience wrapper for sg_hybrid_encrypt method that also calculates the sha 256 hash digest of the asymetrically-encrypted symmetric key.
     This should be saved in your database with an index for easy querying.
     """
     local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
-        to_encrypt, rsa_pubkey, api_token, deprecate_at=deprecate_at, confirm=confirm
+        to_encrypt, rsa_pubkey, deprecate_at=deprecate_at, confirm=confirm
     )
     return (
         local_ciphertext,

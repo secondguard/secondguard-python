@@ -40,7 +40,6 @@ def perform_sg_hybrid_encryption_and_decryption_with_auditlog(
     local_ciphertext, sg_recovery_instructions, sg_recovery_instructions_digest = sg_hybrid_encrypt_with_auditlog(
         to_encrypt=secret,
         rsa_pubkey=TESTING_RSA_PUBKEY,
-        api_token=TESTING_API_TOKEN,
         deprecate_at=deprecate_at,
     )
 
@@ -61,7 +60,6 @@ def perform_sg_hybrid_encryption_and_decryption(secret, deprecate_at=None):
     local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
         to_encrypt=secret,
         rsa_pubkey=TESTING_RSA_PUBKEY,
-        api_token=TESTING_API_TOKEN,
         deprecate_at=deprecate_at,
     )
 

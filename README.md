@@ -21,7 +21,6 @@ YOUR_PUBKEY = '''-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMII
 local_ciphertext, sg_recovery_instructions = sg_hybrid_encrypt(
     to_encrypt=your_secret,
     rsa_pubkey=YOUR_PUBKEY, 
-    api_token=API_TOKEN,
 )
 
 # Asymmetrically decrypt sg_recovery_instructions (via SecondGuard API) and use it to symmetrically decrypt local_ciphertext: 
